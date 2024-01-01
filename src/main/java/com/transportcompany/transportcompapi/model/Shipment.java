@@ -52,6 +52,131 @@ public class Shipment {
     @JoinColumn(name = "EndAddressID", nullable = false)
     private Address endAddress;
 
-    // Constructors, Getters, Setters
+    // Constructor with no args
+    public Shipment() {
+    }
+
+    // Constructor with all args
+    public Shipment(int shipmentID, Timestamp depart, Timestamp arrive, String description, BigDecimal price, BigDecimal weight, int passengerAmount, boolean isSpecialCargo, Customer customer, Employee driver, Vehicle vehicle, Address startAddress, Address endAddress) {
+        this.shipmentID = shipmentID;
+        this.depart = depart;
+        this.arrive = arrive;
+        this.description = description;
+        this.price = price;
+        this.weight = weight;
+        this.passengerAmount = passengerAmount;
+        this.isSpecialCargo = isSpecialCargo;
+        this.customer = customer;
+        this.driver = driver;
+        this.vehicle = vehicle;
+        this.startAddress = startAddress;
+        this.endAddress = endAddress;
+    }
+
+    // Getters and setters for all attributes
+
+    public int getShipmentID() {
+        return shipmentID;
+    }
+
+    public void setShipmentID(int shipmentID) {
+        this.shipmentID = shipmentID;
+    }
+
+    public Timestamp getDepart() {
+        return depart;
+    }
+
+    public void setDepart(Timestamp depart) {
+        this.depart = depart;
+    }
+
+    public Timestamp getArrive() {
+        return arrive;
+    }
+
+    public void setArrive(Timestamp arrive) {
+        this.arrive = arrive;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
+
+    public int getPassengerAmount() {
+        return passengerAmount;
+    }
+
+    public void setPassengerAmount(int passengerAmount) {
+        this.passengerAmount = passengerAmount;
+    }
+
+    public boolean isSpecialCargo() {
+        return isSpecialCargo;
+    }
+
+    public void setSpecialCargo(boolean specialCargo) {
+        isSpecialCargo = specialCargo;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Employee getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Employee driver) {
+        this.driver = driver;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public Address getStartAddress() {
+        return startAddress;
+    }
+
+    public void setStartAddress(Address startAddress) {
+        this.startAddress = startAddress;
+    }
+
+    public Address getEndAddress() {
+        return endAddress;
+    }
+
+    public void setEndAddress(Address endAddress) {
+        this.endAddress = endAddress;
+    }
 }
 
