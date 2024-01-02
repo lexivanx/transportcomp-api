@@ -3,6 +3,8 @@ package com.transportcompany.transportcompapi.service;
 import com.transportcompany.transportcompapi.model.Customer;
 import com.transportcompany.transportcompapi.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,40 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    // Additional business logic methods can be added here
+    // Method to compare BillToPay and AmountPaid fields and update the isAllPaid field
+    public boolean checkPaymentStatusAndUpdate(int customerId) {
+        Optional<Customer> customerCurrent = customerRepository.findById(customerId);
+
+        if (customerCurrent.isPresent()) {
+            Customer customer = customerCurrent.get();
+            if (customer.getBillToPay().compareTo(customer.getAmountPaid()) == 0) {
+                customer.setIsAllPaid(true);
+                customerRepository.save(customer);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to pay a bill regarding shipment
+    public boolean pay(int customerId, BigDecimal amount) {
+        Optional<Customer> customerOpt = customerRepository.findById(customerId);
+
+        if (customerOpt.isPresent()) {
+            Customer customer = customerOpt.get();
+            BigDecimal newAmountPaid = customer.getAmountPaid().add(amount);
+            customer.setAmountPaid(newAmountPaid);
+
+            // Check if the customer has paid all bills and update isAllPaid field
+            if (customer.getBillToPay().compareTo(customer.getAmountPaid()) == 0) {
+                customer.setIsAllPaid(true);
+            }
+
+            customerRepository.save(customer);
+            return true;
+        }
+        return false;
+    }
+
 }
 
