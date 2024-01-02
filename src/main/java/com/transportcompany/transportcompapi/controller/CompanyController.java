@@ -5,6 +5,7 @@ import com.transportcompany.transportcompapi.service.CompanyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -52,5 +53,11 @@ public class CompanyController {
         }
     }
 
+    // Endpoint to sort companies by revenue
+    @GetMapping("/sorted-by-revenue")
+    public ResponseEntity<List<Map<String, Object>>> getCompaniesSortedByRevenue() {
+        List<Map<String, Object>> companies = companyService.getCompaniesSortedByRevenue();
+        return ResponseEntity.ok(companies);
+    }
     // TODO Additional endpoints as required
 }

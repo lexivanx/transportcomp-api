@@ -1,9 +1,12 @@
 package com.transportcompany.transportcompapi.controller;
 
 import com.transportcompany.transportcompapi.model.Employee;
+import com.transportcompany.transportcompapi.model.LicenseType;
 import com.transportcompany.transportcompapi.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -50,6 +53,23 @@ public class EmployeeController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Endpoint for filtering employees by license, allowedSpecialCargo and salary fields
+    @GetMapping("/filter")
+    public ResponseEntity<List<Employee>> filterEmployees(
+            @RequestParam(required = false) LicenseType license,
+            @RequestParam(required = false) Boolean allowedSpecialCargo,
+            @RequestParam(required = false) BigDecimal salary) {
+        List<Employee> employees = employeeService.filterEmployees(license, allowedSpecialCargo, salary);
+        return ResponseEntity.ok(employees);
+    }
+
+    // Endpoint for sorting employees by a field - license, allowedSpecialCargo or salary
+    @GetMapping("/sort")
+    public ResponseEntity<List<Employee>> sortEmployees(@RequestParam String sortBy) {
+        List<Employee> employees = employeeService.sortEmployees(sortBy);
+        return ResponseEntity.ok(employees);
     }
 
     // TODO Additional endpoints as required

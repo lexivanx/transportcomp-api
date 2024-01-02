@@ -29,14 +29,16 @@ public class ShipmentController {
     }
 
     @PostMapping
-    public Shipment addShipment(@RequestBody Shipment shipment) {
-        return shipmentService.saveShipment(shipment);
+    public ResponseEntity<Shipment> addShipment(@RequestBody Shipment shipment) {
+        Shipment newShipment = shipmentService.addShipment(shipment);
+        return ResponseEntity.ok(newShipment);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Shipment> updateShipment(@PathVariable int id, @RequestBody Shipment shipment) {
-        if (shipmentService.getShipmentById(id).isPresent()) {
-            return ResponseEntity.ok(shipmentService.saveShipment(shipment));
+        Shipment updatedShipment = shipmentService.updateShipment(id, shipment);
+        if (updatedShipment != null) {
+            return ResponseEntity.ok(updatedShipment);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -50,6 +52,31 @@ public class ShipmentController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Endpoint to filter shipments by destination address
+    @GetMapping("/filter/destination")
+    public ResponseEntity<List<Shipment>> filterShipmentsByDestination(
+            @RequestParam(required = false) String country,
+            @RequestParam(required = false) String cityVillageName,
+            @RequestParam(required = false) String streetName,
+            @RequestParam(required = false) Integer streetNumber,
+            @RequestParam(required = false) String entrance) {
+
+        List<Shipment> shipments = shipmentService.filterShipmentsByDestination(country, cityVillageName, streetName, streetNumber, entrance);
+        return ResponseEntity.ok(shipments);
+    }
+
+    // Endpoint to sort shipments by destination address
+    // It sorts by a specific field of the destination address, by default the City or Village name
+    // By default it sorts in ascending order
+    @GetMapping("/sort/destination")
+    public ResponseEntity<List<Shipment>> sortShipmentsByDestination(
+            @RequestParam(defaultValue = "CityVillageName") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+
+        List<Shipment> shipments = shipmentService.sortShipmentsBy(sortBy, sortDir);
+        return ResponseEntity.ok(shipments);
     }
 
     // TODO Additional endpoints as required

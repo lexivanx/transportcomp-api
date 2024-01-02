@@ -4,6 +4,8 @@ import com.transportcompany.transportcompapi.model.Customer;
 import com.transportcompany.transportcompapi.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -52,5 +54,29 @@ public class CustomerController {
         }
     }
 
+    // Endpoint to compare BillToPay and AmountPaid fields and update the isAllPaid field
+    @PutMapping("/{id}/confirm-payments")
+    public ResponseEntity<String> confirmPayment(@PathVariable int id) {
+        boolean paymentConfirmed = customerService.checkPaymentStatusAndUpdate(id);
+
+        if (paymentConfirmed) {
+            return ResponseEntity.ok("Payment status confirmed and updated.");
+        } else {
+            return ResponseEntity.badRequest().body("Payment status not updated. Check customer details.");
+        }
+    }
+
+    // Endpoint to pay a bill regarding shipment
+    // Example request body: { "amount": 55.23 }
+    @PostMapping("/{id}/pay")
+    public ResponseEntity<String> makePayment(@PathVariable int id, @RequestBody BigDecimal amount) {
+        boolean paymentSuccess = customerService.pay(id, amount);
+
+        if (paymentSuccess) {
+            return ResponseEntity.ok("Payment made successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Payment failed. Customer not found.");
+        }
+    }
     // TODO Additional endpoints as required
 }
