@@ -2,6 +2,8 @@ package com.transportcompany.transportcompapi.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "Customer")
 public class Customer {
@@ -14,6 +16,12 @@ public class Customer {
 
     @Column(name = "IsAllPaid")
     private boolean isAllPaid;
+
+    @Column(name = "BillToPay", nullable = false)
+    private BigDecimal billToPay;
+
+    @Column(name = "AmountPaid", nullable = false)
+    private BigDecimal amountPaid;
 
     // Constructor with no args
     public Customer() {
@@ -49,5 +57,21 @@ public class Customer {
 
     public void setIsAllPaid(boolean isAllPaid) {
         this.isAllPaid = isAllPaid;
+    }
+
+    public BigDecimal getBillToPay() {
+        return billToPay;
+    }
+
+    public void setBillToPay(BigDecimal billToPay) {
+        this.billToPay = billToPay;
+    }
+
+    public BigDecimal getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(BigDecimal amountPaid) {
+        this.amountPaid = amountPaid;
     }
 }
