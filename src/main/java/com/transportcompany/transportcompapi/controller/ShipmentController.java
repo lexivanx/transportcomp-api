@@ -4,7 +4,9 @@ import com.transportcompany.transportcompapi.model.Shipment;
 import com.transportcompany.transportcompapi.service.ShipmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
 import java.util.List;
+import java.sql.Timestamp;
 
 @RestController
 @RequestMapping("/api/shipments")
@@ -54,6 +56,29 @@ public class ShipmentController {
         }
     }
 
+    // Endpoint for the total revenue of a company
+    @GetMapping("/revenue/by-company")
+    public ResponseEntity<BigDecimal> getTotalRevenueByCompany(@RequestParam int companyId) {
+        BigDecimal totalRevenue = shipmentService.getTotalRevenueByCompanyId(companyId);
+        return ResponseEntity.ok(totalRevenue);
+    }
+
+    // Endpoint for the total revenue of a company in a period
+    @GetMapping("/revenue/by-company-in-period")
+    public ResponseEntity<BigDecimal> getTotalRevenueByCompanyInPeriod(@RequestParam int companyId,
+                                                                       @RequestParam Timestamp startDate,
+                                                                       @RequestParam Timestamp endDate) {
+        BigDecimal totalRevenue = shipmentService.getTotalRevenueByCompanyIdInPeriod(companyId, startDate, endDate);
+        return ResponseEntity.ok(totalRevenue);
+    }
+
+    // Endpoint for the total amount of shipments done per company
+    @GetMapping("/total-by-company")
+    public ResponseEntity<Long> getTotalShipmentsByCompany(@RequestParam int companyId) {
+        long totalShipments = shipmentService.getTotalShipmentsByCompanyId(companyId);
+        return ResponseEntity.ok(totalShipments);
+    }
+
     // Endpoint to filter shipments by destination address
     @GetMapping("/filter/destination")
     public ResponseEntity<List<Shipment>> filterShipmentsByDestination(
@@ -79,5 +104,40 @@ public class ShipmentController {
         return ResponseEntity.ok(shipments);
     }
 
-    // TODO Additional endpoints as required
+    // Methods for filtering Shipments by all fields
+    // including by IDs of related entities
+    @GetMapping("/filter/by-price")
+    public ResponseEntity<List<Shipment>> getShipmentsByPrice(@RequestParam BigDecimal price) {
+        return ResponseEntity.ok(shipmentService.findShipmentsByPrice(price));
+    }
+
+    @GetMapping("/filter/by-weight")
+    public ResponseEntity<List<Shipment>> getShipmentsByWeight(@RequestParam BigDecimal weight) {
+        return ResponseEntity.ok(shipmentService.findShipmentsByWeight(weight));
+    }
+
+    @GetMapping("/filter/by-special-cargo")
+    public ResponseEntity<List<Shipment>> getShipmentsBySpecialCargo(@RequestParam boolean isSpecialCargo) {
+        return ResponseEntity.ok(shipmentService.findShipmentsBySpecialCargo(isSpecialCargo));
+    }
+
+    @GetMapping("/filter/by-passenger-amount")
+    public ResponseEntity<List<Shipment>> getShipmentsByPassengerAmount(@RequestParam int passengerAmount) {
+        return ResponseEntity.ok(shipmentService.findShipmentsByPassengerAmount(passengerAmount));
+    }
+
+    @GetMapping("/filter/by-vehicle")
+    public ResponseEntity<List<Shipment>> getShipmentsByVehicleId(@RequestParam int vehicleId) {
+        return ResponseEntity.ok(shipmentService.findShipmentsByVehicleId(vehicleId));
+    }
+
+    @GetMapping("/filter/by-driver")
+    public ResponseEntity<List<Shipment>> getShipmentsByDriverId(@RequestParam int driverId) {
+        return ResponseEntity.ok(shipmentService.findShipmentsByDriverId(driverId));
+    }
+
+    @GetMapping("/filter/by-customer")
+    public ResponseEntity<List<Shipment>> getShipmentsByCustomerId(@RequestParam int customerId) {
+        return ResponseEntity.ok(shipmentService.findShipmentsByCustomerId(customerId));
+    }
 }

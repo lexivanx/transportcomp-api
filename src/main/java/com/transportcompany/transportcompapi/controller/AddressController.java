@@ -51,6 +51,4 @@ public class AddressController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    // TODO Additional endpoints as required
 }

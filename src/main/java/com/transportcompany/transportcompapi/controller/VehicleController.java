@@ -51,6 +51,4 @@ public class VehicleController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    // TODO Additional endpoints as required
 }

@@ -59,5 +59,4 @@ public class CompanyController {
         List<Map<String, Object>> companies = companyService.getCompaniesSortedByRevenue();
         return ResponseEntity.ok(companies);
     }
-    // TODO Additional endpoints as required
 }

@@ -78,5 +78,4 @@ public class CustomerController {
             return ResponseEntity.badRequest().body("Payment failed. Customer not found.");
         }
     }
-    // TODO Additional endpoints as required
 }

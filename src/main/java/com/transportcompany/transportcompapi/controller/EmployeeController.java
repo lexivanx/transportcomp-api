@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -72,5 +73,17 @@ public class EmployeeController {
         return ResponseEntity.ok(employees);
     }
 
-    // TODO Additional endpoints as required
+    // Endpoint to get all drivers with their shipment amount
+    @GetMapping("/drivers/shipment-count")
+    public ResponseEntity<List<Map<String, Object>>> getAllDriversWithShipmentCount() {
+        List<Map<String, Object>> drivers = employeeService.getAllDriversWithShipmentCount();
+        return ResponseEntity.ok(drivers);
+    }
+
+    // Endpoint to get all drivers with each revenue
+    @GetMapping("/drivers/total-revenue")
+    public ResponseEntity<List<Map<String, Object>>> getAllDriversWithTotalRevenue() {
+        List<Map<String, Object>> drivers = employeeService.getAllDriversWithTotalRevenue();
+        return ResponseEntity.ok(drivers);
+    }
 }
