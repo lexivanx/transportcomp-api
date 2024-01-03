@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,16 @@ public class EmployeeService {
     public List<Employee> sortEmployees(String sortBy) {
         Sort sort = Sort.by(sortBy).ascending();
         return employeeRepository.findAll(sort);
+    }
+
+    // Method for getting drivers with amount of shipments
+    public List<Map<String, Object>> getAllDriversWithShipmentCount() {
+        return employeeRepository.findAllDriversWithShipmentCount();
+    }
+
+    // Method for getting drivers with revenue per driver
+    public List<Map<String, Object>> getAllDriversWithTotalRevenue() {
+        return employeeRepository.findAllDriversWithTotalRevenue();
     }
 }
 

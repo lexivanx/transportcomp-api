@@ -6,6 +6,7 @@ import com.transportcompany.transportcompapi.repository.CustomerRepository;
 import com.transportcompany.transportcompapi.repository.ShipmentRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.sql.Timestamp;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -80,9 +81,19 @@ public class ShipmentService {
         return null;
     }
 
+    // Method to calculate the total revenue of a company
+    public BigDecimal getTotalRevenueByCompanyId(int companyId) {
+        return shipmentRepository.getTotalRevenueByCompany(companyId);
+    }
+
+    // Method to calculate the total revenue of a company in a period
+    public BigDecimal getTotalRevenueByCompanyIdInPeriod(int companyId, Timestamp startDate, Timestamp endDate) {
+        return shipmentRepository.getTotalRevenueByCompanyInPeriod(companyId, startDate, endDate);
+    }
+
     // Method to filter shipments by criteria
     public List<Shipment> filterShipmentsByDestination(String country, String cityVillageName, String streetName, Integer streetNumber, String entrance) {
-        return shipmentRepository.findByCustomCriteria(
+        return shipmentRepository.findByEndAddressCountryAndEndAddressCityVillageNameAndEndAddressStreetNameAndEndAddressStreetNumberAndEndAddressEntrance(
                 country, cityVillageName, streetName, streetNumber, entrance);
     }
 
@@ -99,6 +110,40 @@ public class ShipmentService {
             default -> sortBy; // fields directly on the Shipment entity
         };
         return shipmentRepository.findAll(Sort.by(direction, sortProperty));
+    }
+
+    // Methods to filter by other shipment fields
+    public List<Shipment> findShipmentsByPrice(BigDecimal price) {
+        return shipmentRepository.findByPrice(price);
+    }
+
+    public List<Shipment> findShipmentsByWeight(BigDecimal weight) {
+        return shipmentRepository.findByWeight(weight);
+    }
+
+    public List<Shipment> findShipmentsBySpecialCargo(boolean isSpecialCargo) {
+        return shipmentRepository.findBySpecialCargo(isSpecialCargo);
+    }
+
+    public List<Shipment> findShipmentsByPassengerAmount(int passengerAmount) {
+        return shipmentRepository.findByPassengerAmount(passengerAmount);
+    }
+
+    public List<Shipment> findShipmentsByVehicleId(int vehicleId) {
+        return shipmentRepository.findByVehicleVehicleID(vehicleId);
+    }
+
+    public List<Shipment> findShipmentsByDriverId(int employeeId) {
+        return shipmentRepository.findByDriverEmployeeID(employeeId);
+    }
+
+    public List<Shipment> findShipmentsByCustomerId(int customerId) {
+        return shipmentRepository.findByCustomerCustomerID(customerId);
+    }
+
+    // Method to calculate the total number of shipments of a company
+    public long getTotalShipmentsByCompanyId(int companyId) {
+        return shipmentRepository.countByCompany(companyId);
     }
 }
 
