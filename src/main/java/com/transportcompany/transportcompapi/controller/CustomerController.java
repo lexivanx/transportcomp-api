@@ -37,11 +37,12 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable int id, @RequestBody Customer customer) {
-        if (customerService.getCustomerById(id).isPresent()) {
-            return ResponseEntity.ok(customerService.saveCustomer(customer));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return customerService.getCustomerById(id)
+                .map(existingCustomer -> {
+                    customer.setCustomerID(id);
+                    return ResponseEntity.ok(customerService.saveCustomer(customer));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -60,9 +61,9 @@ public class CustomerController {
         boolean paymentConfirmed = customerService.checkPaymentStatusAndUpdate(id);
 
         if (paymentConfirmed) {
-            return ResponseEntity.ok("Payment status confirmed and updated.");
+            return ResponseEntity.ok("Bills paid in full.");
         } else {
-            return ResponseEntity.badRequest().body("Payment status not updated. Check customer details.");
+            return ResponseEntity.ok("Bills not paid yet.");
         }
     }
 
@@ -75,7 +76,7 @@ public class CustomerController {
         if (paymentSuccess) {
             return ResponseEntity.ok("Payment made successfully.");
         } else {
-            return ResponseEntity.badRequest().body("Payment failed. Customer not found.");
+            return ResponseEntity.badRequest().body("Payment failed. Customer not found, bills already paid or payment is too high.");
         }
     }
 }

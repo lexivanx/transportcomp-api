@@ -38,12 +38,12 @@ public class ShipmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Shipment> updateShipment(@PathVariable int id, @RequestBody Shipment shipment) {
-        Shipment updatedShipment = shipmentService.updateShipment(id, shipment);
-        if (updatedShipment != null) {
-            return ResponseEntity.ok(updatedShipment);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return shipmentService.getShipmentById(id)
+                .map(existingShipment -> {
+                    shipment.setShipmentID(id);
+                    return ResponseEntity.ok(shipmentService.updateShipment(id, shipment));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -79,17 +79,20 @@ public class ShipmentController {
         return ResponseEntity.ok(totalShipments);
     }
 
-    // Endpoint to filter shipments by destination address
-    @GetMapping("/filter/destination")
-    public ResponseEntity<List<Shipment>> filterShipmentsByDestination(
-            @RequestParam(required = false) String country,
-            @RequestParam(required = false) String cityVillageName,
-            @RequestParam(required = false) String streetName,
-            @RequestParam(required = false) Integer streetNumber,
-            @RequestParam(required = false) String entrance) {
+    // Endpoints to filter shipments by destination address fields
+    @GetMapping("/filter/destination/by-country")
+    public ResponseEntity<List<Shipment>> filterShipmentsByCountry(@RequestParam String country) {
+        return ResponseEntity.ok(shipmentService.filterShipmentsByCountry(country));
+    }
 
-        List<Shipment> shipments = shipmentService.filterShipmentsByDestination(country, cityVillageName, streetName, streetNumber, entrance);
-        return ResponseEntity.ok(shipments);
+    @GetMapping("/filter/destination/by-city")
+    public ResponseEntity<List<Shipment>> filterShipmentsByCityVillageName(@RequestParam String cityVillageName) {
+        return ResponseEntity.ok(shipmentService.filterShipmentsByCityVillageName(cityVillageName));
+    }
+
+    @GetMapping("/filter/destination/by-street")
+    public ResponseEntity<List<Shipment>> filterShipmentsByStreetName(@RequestParam String streetName) {
+        return ResponseEntity.ok(shipmentService.filterShipmentsByStreetName(streetName));
     }
 
     // Endpoint to sort shipments by destination address

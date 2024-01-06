@@ -39,11 +39,12 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable int id, @RequestBody Employee employee) {
-        if (employeeService.getEmployeeById(id).isPresent()) {
-            return ResponseEntity.ok(employeeService.saveEmployee(employee));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return employeeService.getEmployeeById(id)
+                .map(existingEmployee -> {
+                    employee.setEmployeeID(id);
+                    return ResponseEntity.ok(employeeService.saveEmployee(employee));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -56,15 +57,25 @@ public class EmployeeController {
         }
     }
 
-    // Endpoint for filtering employees by license, allowedSpecialCargo and salary fields
-    @GetMapping("/filter")
-    public ResponseEntity<List<Employee>> filterEmployees(
-            @RequestParam(required = false) LicenseType license,
-            @RequestParam(required = false) Boolean allowedSpecialCargo,
-            @RequestParam(required = false) BigDecimal salary) {
-        List<Employee> employees = employeeService.filterEmployees(license, allowedSpecialCargo, salary);
+    // Endpoints for filtering employees by license, allowedSpecialCargo and salary fields
+    @GetMapping("/filter/license")
+    public ResponseEntity<List<Employee>> filterEmployeesByLicense(@RequestParam LicenseType license) {
+        List<Employee> employees = employeeService.filterEmployeesByLicense(license);
         return ResponseEntity.ok(employees);
     }
+
+    @GetMapping("/filter/special-cargo")
+    public ResponseEntity<List<Employee>> filterEmployeesByAllowedSpecialCargo(@RequestParam Boolean allowedSpecialCargo) {
+        List<Employee> employees = employeeService.filterEmployeesByAllowedSpecialCargo(allowedSpecialCargo);
+        return ResponseEntity.ok(employees);
+    }
+
+    @GetMapping("/filter/salary")
+    public ResponseEntity<List<Employee>> filterEmployeesBySalary(@RequestParam BigDecimal salary) {
+        List<Employee> employees = employeeService.filterEmployeesBySalary(salary);
+        return ResponseEntity.ok(employees);
+    }
+
 
     // Endpoint for sorting employees by a field - license, allowedSpecialCargo or salary
     @GetMapping("/sort")

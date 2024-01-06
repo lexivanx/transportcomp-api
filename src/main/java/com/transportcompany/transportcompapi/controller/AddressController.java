@@ -35,11 +35,12 @@ public class AddressController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Address> updateAddress(@PathVariable int id, @RequestBody Address address) {
-        if (addressService.getAddressById(id).isPresent()) {
-            return ResponseEntity.ok(addressService.saveAddress(address));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return addressService.getAddressById(id)
+                .map(existingAddress -> {
+                    address.setAddressID(id);
+                    return ResponseEntity.ok(addressService.saveAddress(address));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

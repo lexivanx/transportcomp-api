@@ -35,11 +35,12 @@ public class VehicleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Vehicle> updateVehicle(@PathVariable int id, @RequestBody Vehicle vehicle) {
-        if (vehicleService.getVehicleById(id).isPresent()) {
-            return ResponseEntity.ok(vehicleService.saveVehicle(vehicle));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return vehicleService.getVehicleById(id)
+                .map(existingVehicle -> {
+                    vehicle.setVehicleID(id);
+                    return ResponseEntity.ok(vehicleService.saveVehicle(vehicle));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

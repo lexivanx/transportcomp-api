@@ -36,11 +36,12 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Company> updateCompany(@PathVariable int id, @RequestBody Company company) {
-        if (companyService.getCompanyById(id).isPresent()) {
-            return ResponseEntity.ok(companyService.saveCompany(company));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return companyService.getCompanyById(id)
+                .map(existingCompany -> {
+                    company.setCompanyID(id); // Ensure the company has the ID set to the existing one
+                    return ResponseEntity.ok(companyService.saveCompany(company));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
