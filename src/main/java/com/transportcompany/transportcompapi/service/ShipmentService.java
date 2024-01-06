@@ -91,10 +91,17 @@ public class ShipmentService {
         return shipmentRepository.getTotalRevenueByCompanyInPeriod(companyId, startDate, endDate);
     }
 
-    // Method to filter shipments by criteria
-    public List<Shipment> filterShipmentsByDestination(String country, String cityVillageName, String streetName, Integer streetNumber, String entrance) {
-        return shipmentRepository.findByEndAddressCountryAndEndAddressCityVillageNameAndEndAddressStreetNameAndEndAddressStreetNumberAndEndAddressEntrance(
-                country, cityVillageName, streetName, streetNumber, entrance);
+    // Methods to filter shipments by end address fields
+    public List<Shipment> filterShipmentsByCountry(String country) {
+        return shipmentRepository.findByEndAddressCountry(country);
+    }
+
+    public List<Shipment> filterShipmentsByCityVillageName(String cityVillageName) {
+        return shipmentRepository.findByEndAddressCityVillageName(cityVillageName);
+    }
+
+    public List<Shipment> filterShipmentsByStreetName(String streetName) {
+        return shipmentRepository.findByEndAddressStreetName(streetName);
     }
 
     // Method to sort shipments by criteria, City or Village name
@@ -122,7 +129,7 @@ public class ShipmentService {
     }
 
     public List<Shipment> findShipmentsBySpecialCargo(boolean isSpecialCargo) {
-        return shipmentRepository.findBySpecialCargo(isSpecialCargo);
+        return shipmentRepository.findByIsSpecialCargo(isSpecialCargo);
     }
 
     public List<Shipment> findShipmentsByPassengerAmount(int passengerAmount) {

@@ -54,7 +54,14 @@ public class CustomerService {
 
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
+            // Check if bills are already paid before current payment
+            if (customer.getBillToPay().compareTo(customer.getAmountPaid()) == 0) {
+                return false;
+            }
             BigDecimal newAmountPaid = customer.getAmountPaid().add(amount);
+            if (newAmountPaid.compareTo(customer.getBillToPay()) > 0) {
+                return false;
+            }
             customer.setAmountPaid(newAmountPaid);
 
             // Check if the customer has paid all bills and update isAllPaid field

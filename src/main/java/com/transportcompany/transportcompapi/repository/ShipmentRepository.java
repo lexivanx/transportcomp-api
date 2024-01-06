@@ -33,12 +33,13 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
 
     // Queries for filtering by destination address and other fields
     // including other fields of related entities
-    List<Shipment> findByEndAddressCountryAndEndAddressCityVillageNameAndEndAddressStreetNameAndEndAddressStreetNumberAndEndAddressEntrance(
-            String country, String cityVillageName, String streetName, Integer streetNumber, String entrance);
+    List<Shipment> findByEndAddressCountry(String country);
+    List<Shipment> findByEndAddressCityVillageName(String cityVillageName);
+    List<Shipment> findByEndAddressStreetName(String streetName);
 
     List<Shipment> findByPrice(BigDecimal price);
     List<Shipment> findByWeight(BigDecimal weight);
-    List<Shipment> findBySpecialCargo(boolean isSpecialCargo);
+    List<Shipment> findByIsSpecialCargo(boolean isSpecialCargo);
     List<Shipment> findByPassengerAmount(int passengerAmount);
     List<Shipment> findByVehicleVehicleID(int vehicleId);
     List<Shipment> findByDriverEmployeeID(int employeeId);

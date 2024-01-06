@@ -36,9 +36,17 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    // Method for filtering employees by criteria
-    public List<Employee> filterEmployees(LicenseType license, Boolean allowedSpecialCargo, BigDecimal salary) {
-        return employeeRepository.findByLicenseAndAllowedSpecialCargoAndSalary(license, allowedSpecialCargo, salary);
+    // Methods for filtering employees by license, special cargo and salary
+    public List<Employee> filterEmployeesByLicense(LicenseType license) {
+        return employeeRepository.findByLicense(license);
+    }
+
+    public List<Employee> filterEmployeesByAllowedSpecialCargo(Boolean allowedSpecialCargo) {
+        return employeeRepository.findByAllowedSpecialCargo(allowedSpecialCargo);
+    }
+
+    public List<Employee> filterEmployeesBySalary(BigDecimal salary) {
+        return employeeRepository.findBySalary(salary);
     }
 
     // Method for sorting employees by criteria

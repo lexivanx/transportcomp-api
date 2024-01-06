@@ -11,7 +11,14 @@ import java.util.Map;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    List<Employee> findByLicenseAndAllowedSpecialCargoAndSalary(LicenseType license, boolean allowedSpecialCargo, BigDecimal salary);
+    // Method to filter employees by license type
+    List<Employee> findByLicense(LicenseType license);
+
+    // Method to filter employees by whether they are allowed to handle special cargo
+    List<Employee> findByAllowedSpecialCargo(Boolean allowedSpecialCargo);
+
+    // Method to filter employees by salary
+    List<Employee> findBySalary(BigDecimal salary);
 
     // Query - all drivers with amount of shipments
     @Query("SELECT new map(e.employeeID as employeeID, e.name as name, COUNT(s) as shipmentCount) " +
