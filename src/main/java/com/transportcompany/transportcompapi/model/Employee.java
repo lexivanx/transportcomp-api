@@ -17,7 +17,7 @@ public class Employee {
     @Column(name = "License", nullable = false)
     private LicenseType license;
 
-    @Column(name = "AllowedSpecialCargo")
+    @Column(name = "allowedspecialcargo")
     private boolean allowedSpecialCargo;
 
     @Column(name = "Salary", nullable = false)

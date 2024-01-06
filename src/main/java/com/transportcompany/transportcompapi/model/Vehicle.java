@@ -14,7 +14,7 @@ public class Vehicle {
     private VehicleType type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "LicenseRequired", nullable = false)
+    @Column(name = "licenserequired", nullable = false)
     private LicenseType licenseRequired;
 
     @ManyToOne

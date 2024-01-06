@@ -12,13 +12,13 @@ public class Address {
     @Column(name = "Country", nullable = false)
     private String country;
 
-    @Column(name = "CityVillageName", nullable = false)
+    @Column(name = "cityvillagename", nullable = false)
     private String cityVillageName;
 
-    @Column(name = "StreetName", nullable = false)
+    @Column(name = "streetname", nullable = false)
     private String streetName;
 
-    @Column(name = "StreetNumber", nullable = false)
+    @Column(name = "streetnumber", nullable = false)
     private int streetNumber;
 
     @Column(name = "Entrance")

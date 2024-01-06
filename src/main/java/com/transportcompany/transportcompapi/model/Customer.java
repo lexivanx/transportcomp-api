@@ -14,13 +14,13 @@ public class Customer {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(name = "IsAllPaid")
+    @Column(name = "isallpaid")
     private boolean isAllPaid;
 
-    @Column(name = "BillToPay", nullable = false)
+    @Column(name = "billtopay", nullable = false)
     private BigDecimal billToPay;
 
-    @Column(name = "AmountPaid", nullable = false)
+    @Column(name = "amountpaid", nullable = false)
     private BigDecimal amountPaid;
 
     // Constructor with no args

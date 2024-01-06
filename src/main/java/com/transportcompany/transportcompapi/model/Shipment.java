@@ -26,10 +26,10 @@ public class Shipment {
     @Column(name = "Weight")
     private BigDecimal weight;
 
-    @Column(name = "PassengerAmount")
+    @Column(name = "passengeramount")
     private int passengerAmount;
 
-    @Column(name = "IsSpecialCargo")
+    @Column(name = "isspecialcargo")
     private boolean isSpecialCargo;
 
     @ManyToOne
@@ -45,11 +45,11 @@ public class Shipment {
     private Vehicle vehicle;
 
     @ManyToOne
-    @JoinColumn(name = "StartAddressID", nullable = false)
+    @JoinColumn(name = "startaddressid", nullable = false)
     private Address startAddress;
 
     @ManyToOne
-    @JoinColumn(name = "EndAddressID", nullable = false)
+    @JoinColumn(name = "endaddressid", nullable = false)
     private Address endAddress;
 
     // Constructor with no args
